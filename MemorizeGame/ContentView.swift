@@ -51,7 +51,9 @@ struct ContentView: View {
             HStack {
                 Spacer()
                 selectTheme0
+                Spacer()
                 selectTheme1
+                Spacer()
                 selectTheme2
                 Spacer()
              }
@@ -65,15 +67,34 @@ struct ContentView: View {
         Button( action: {
             shuffle(0)
         }, label: {
-            Text(symbols[0][0]).font(.largeTitle)
-        })
+            let v = VStack {
+                Image(systemName: "wineglass")
+                Text("Glasses").font(.subheadline)
+            }
+            if themeSelected == 0 {
+                v.foregroundColor(.red)
+            } else {
+                v
+            }
+        }
+    )
     }
+  
+ 
 
     var selectTheme1 : some View {
         Button( action: {
            shuffle(1)
         }, label: {
-            Text(symbols[1][0]).font(.largeTitle)
+            let v = VStack {
+                Image(systemName: "basketball")
+                Text("Sport").font(.subheadline)
+            }
+            if themeSelected == 1 {
+                v.foregroundColor(.red)
+            } else {
+                v
+            }
         })
     }
 
@@ -81,7 +102,15 @@ struct ContentView: View {
         Button( action: {
             shuffle(2)
         }, label: {
-            Text(symbols[2][0]).font(.largeTitle)
+            let v = VStack {
+                Image(systemName: "car")
+                Text("Transport").font(.subheadline)
+            }
+            if themeSelected == 2 {
+                v.foregroundColor(.red)
+            } else {
+                v
+            }
         })
     }
     
