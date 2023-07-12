@@ -67,17 +67,14 @@ struct ContentView: View {
         Button( action: {
             shuffle(0)
         }, label: {
-            let v = VStack {
-                Image(systemName: "wineglass")
-                Text("Glasses").font(.subheadline)
-            }
+            let v = tabBarLabel(iconName: "wineglass", label: "Glasses", selected: themeSelected == 0)
             if themeSelected == 0 {
                 v.foregroundColor(.red)
             } else {
                 v
             }
         }
-    )
+        ) // Button
     }
   
  
@@ -87,8 +84,7 @@ struct ContentView: View {
            shuffle(1)
         }, label: {
             let v = VStack {
-                Image(systemName: "basketball")
-                Text("Sport").font(.subheadline)
+                tabBarLabel(iconName: "basketball", label: "Sport", selected: themeSelected == 1)
             }
             if themeSelected == 1 {
                 v.foregroundColor(.red)
@@ -102,10 +98,8 @@ struct ContentView: View {
         Button( action: {
             shuffle(2)
         }, label: {
-            let v = VStack {
-                Image(systemName: "car")
-                Text("Transport").font(.subheadline)
-            }
+            let v = tabBarLabel(iconName :"car", label: "Transport",
+                        selected: themeSelected == 2)
             if themeSelected == 2 {
                 v.foregroundColor(.red)
             } else {
@@ -129,9 +123,31 @@ struct ContentView: View {
             }
         }
     }
-    
- 
 }
+
+//
+// Tab bar button
+//
+
+struct tabBarLabel : View {
+    @State var iconName : String
+    @State var label    : String
+    @State var selected : Bool
+    var body : some View {
+        VStack {
+            let v = VStack {
+                Image(systemName: iconName)
+                Text(label).font(.subheadline)
+            }
+            if selected == true {
+                v.foregroundColor(.red)
+            } else {
+                v
+            }
+        }
+    }
+}
+
 
 //
 // Single Card
