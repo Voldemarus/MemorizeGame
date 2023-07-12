@@ -18,23 +18,25 @@ struct ContentView: View {
 
         ["🚗", "🚕", "🚙", "🚌", "🚎", "🚲", "🩼", "🚲", "🚔", "🚃",
           "✈️", "⛵️", "🚀", "⚓️", "🪝", "🚁", "🛟", "⛽️"],
-        
     ];
     
     @State var count = 6
-    @State var themeSelected = 2
+    @State var themeSelected = -1
     
+    @State private var theme : [String] = []
     var body: some View {
 
         VStack {
             Text("Memorize game").font(.largeTitle)
-            var theme = symbols[themeSelected]
-
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                ForEach(symbols[themeSelected][0..<count], id: \.self, content: { emoji in
-                    CardView(symbol : emoji).aspectRatio(2/3, contentMode: .fit)
-                })
+            
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
+                    ForEach(theme[0..<theme.count], id: \.self)  { emoji in
+                        CardView(symbol : emoji).aspectRatio(3.0/4.0, contentMode: .fit)
+                    }
+                }
             }
+             
             Spacer()
             HStack {
                 removeButton
@@ -45,13 +47,15 @@ struct ContentView: View {
                 Spacer()
                 addButton
             }
+            .font(.largeTitle)
+            .padding(.horizontal)
         }
-        .padding()
+        .padding(.horizontal)
     }
     
     var selectTheme0 : some View {
         Button( action: {
-            themeSelected = 0
+            shuffle(0)
         }, label: {
             Text(symbols[0][0]).font(.largeTitle)
         })
@@ -59,7 +63,7 @@ struct ContentView: View {
 
     var selectTheme1 : some View {
         Button( action: {
-            themeSelected = 0
+           shuffle(1)
         }, label: {
             Text(symbols[1][0]).font(.largeTitle)
         })
@@ -67,9 +71,35 @@ struct ContentView: View {
 
     var selectTheme2 : some View {
         Button( action: {
-            themeSelected = 0
+            shuffle(2)
         }, label: {
             Text(symbols[2][0]).font(.largeTitle)
+        })
+    }
+    
+     
+    func shuffle(_ newTheme : Int) {
+        themeSelected = newTheme
+        theme.removeAll()
+        theme = symbols[themeSelected]
+        let cnt = theme.count
+        for i in 0..<cnt {
+            let newIndex = Int.random(in: 0..<cnt)
+            if newIndex != i {
+                let tmp = theme[i]
+                theme[i] = theme[newIndex]
+                theme[newIndex] = tmp
+            }
+        }
+    }
+    
+    var addButton : some View {
+        Button(action: {
+            if count < symbols[themeSelected].count  {
+                count += 1
+            }
+        }, label: {
+            Image(systemName: "plus.circle")
         })
     }
     
@@ -80,16 +110,6 @@ struct ContentView: View {
             }
         }, label: {
             Image(systemName: "minus.circle")
-        })
-    }
-    
-    var addButton : some View {
-        Button(action: {
-            if count < symbols[themeSelected].count  {
-                count += 1
-            }
-        }, label: {
-            Image(systemName: "plus.circle")
         })
     }
     
@@ -106,7 +126,7 @@ struct CardView : View {
     
     var body: some View {
         ZStack {
-            let shape = RoundedRectangle(cornerSize: CGSizeMake(20,20))
+            let shape = RoundedRectangle(cornerSize: CGSizeMake(10,10))
             if faceUp {
                 shape.fill()
                     .foregroundColor(.white)
@@ -128,7 +148,6 @@ struct CardView : View {
     }
    
 }
-
 
 
 struct ContentView_Previews: PreviewProvider {
