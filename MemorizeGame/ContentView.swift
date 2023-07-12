@@ -20,17 +20,27 @@ struct ContentView: View {
           "✈️", "⛵️", "🚀", "⚓️", "🪝", "🚁", "🛟", "⛽️"],
     ];
     
-    @State var count = 6
-    @State var themeSelected = -1
+     @State var themeSelected = 0
     
     @State private var theme : [String] = []
+    
+    private let gridFormat = [
+        GridItem(.adaptive(minimum: 100), spacing: -4),
+    ]
+    
+    
+    init() {
+        theme = symbols[0]
+        shuffle(0)
+    }
+    
     var body: some View {
 
         VStack {
             Text("Memorize game").font(.largeTitle)
             
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
+                LazyVGrid(columns: gridFormat, spacing : 7 ) {
                     ForEach(theme[0..<theme.count], id: \.self)  { emoji in
                         CardView(symbol : emoji).aspectRatio(3.0/4.0, contentMode: .fit)
                     }
@@ -39,14 +49,12 @@ struct ContentView: View {
              
             Spacer()
             HStack {
-                removeButton
                 Spacer()
                 selectTheme0
                 selectTheme1
                 selectTheme2
                 Spacer()
-                addButton
-            }
+             }
             .font(.largeTitle)
             .padding(.horizontal)
         }
@@ -93,26 +101,7 @@ struct ContentView: View {
         }
     }
     
-    var addButton : some View {
-        Button(action: {
-            if count < symbols[themeSelected].count  {
-                count += 1
-            }
-        }, label: {
-            Image(systemName: "plus.circle")
-        })
-    }
-    
-    var removeButton : some View {
-        Button( action: {
-            if count > 1 {
-                count -= 1
-            }
-        }, label: {
-            Image(systemName: "minus.circle")
-        })
-    }
-    
+ 
 }
 
 //
