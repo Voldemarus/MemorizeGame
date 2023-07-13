@@ -23,15 +23,16 @@ struct ContentView: View {
           "✈️", "⛵️", "🚀", "⚓️", "🪝", "🚁", "🛟", "⛽️"],
     ];
     
-     @State var themeSelected = 0
+     @State var themeSelected = 0  
     
-    @State private var theme : [String] = []
+    // current theme to be displayed with initial value
+    @State var theme : [String] = ["q","w","e","r","t","y","a", "s","d","f","z","x","c","v"]
     
     private let gridFormat = [
         GridItem(.adaptive(minimum: 80, maximum: 140), spacing: gridItemSpacing),
     ]
     
-    
+    // attempt to initialise view on startup
     init() {
         theme = symbols[0]
         shuffle(0)
@@ -53,11 +54,11 @@ struct ContentView: View {
             Spacer()
             HStack {
                 Spacer()
-                selectTheme0
+                selectTheme(0, icon : "wineglass", label: "Glasses")
                 Spacer()
-                selectTheme1
+                selectTheme(1, icon: "basketball", label: "Sport")
                 Spacer()
-                selectTheme2
+                selectTheme(2, icon : "car", label: "Transport")
                 Spacer()
              }
             .font(.largeTitle)
@@ -66,12 +67,12 @@ struct ContentView: View {
         .padding(.horizontal)
     }
     
-    var selectTheme0 : some View {
+    func selectTheme (_ theme: Int, icon : String, label : String) -> some View {
         Button( action: {
-            shuffle(0)
+            shuffle(theme)
         }, label: {
-            let v = tabBarLabel(iconName: "wineglass", label: "Glasses", selected: themeSelected == 0)
-            if themeSelected == 0 {
+            let v = tabBarLabel(iconName: icon, label: label, selected: themeSelected == theme)
+            if themeSelected == theme {
                 v.foregroundColor(.red)
             } else {
                 v
@@ -80,38 +81,7 @@ struct ContentView: View {
         ) // Button
     }
   
- 
-
-    var selectTheme1 : some View {
-        Button( action: {
-           shuffle(1)
-        }, label: {
-            let v = VStack {
-                tabBarLabel(iconName: "basketball", label: "Sport", selected: themeSelected == 1)
-            }
-            if themeSelected == 1 {
-                v.foregroundColor(.red)
-            } else {
-                v
-            }
-        })
-    }
-
-    var selectTheme2 : some View {
-        Button( action: {
-            shuffle(2)
-        }, label: {
-            let v = tabBarLabel(iconName :"car", label: "Transport",
-                        selected: themeSelected == 2)
-            if themeSelected == 2 {
-                v.foregroundColor(.red)
-            } else {
-                v
-            }
-        })
-    }
     
-     
     func shuffle(_ newTheme : Int) {
         themeSelected = newTheme
         theme.removeAll()
