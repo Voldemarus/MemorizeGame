@@ -7,7 +7,10 @@
 
 import SwiftUI
 
+let gridItemSpacing = 7.0
+
 struct ContentView: View {
+
     
     var symbols = [
          ["🫖", "☕️", "🍵", "🧃", "🥤", "🧋", "🍺",
@@ -25,7 +28,7 @@ struct ContentView: View {
     @State private var theme : [String] = []
     
     private let gridFormat = [
-        GridItem(.adaptive(minimum: 100), spacing: -4),
+        GridItem(.adaptive(minimum: 80, maximum: 140), spacing: gridItemSpacing),
     ]
     
     
@@ -40,9 +43,9 @@ struct ContentView: View {
             Text("Memorize game").font(.largeTitle)
             
             ScrollView {
-                LazyVGrid(columns: gridFormat, spacing : 7 ) {
+                LazyVGrid(columns: gridFormat, spacing : gridItemSpacing ) {
                     ForEach(theme[0..<theme.count], id: \.self)  { emoji in
-                        CardView(symbol : emoji).aspectRatio(3.0/4.0, contentMode: .fit)
+                        CardView(symbol : emoji).aspectRatio(1.0, contentMode: .fit)
                     }
                 }
             }
@@ -166,14 +169,15 @@ struct CardView : View {
                     .foregroundColor(.white)
                 shape.stroke(lineWidth: 3.0)
                     .foregroundColor(.red)
-                    .padding(.horizontal)
                 
                 Text(symbol).font(.largeTitle)
             }
             else {
-                shape.fill()
-                    .foregroundColor(.red)
-                    .padding(.horizontal)
+                ZStack {
+                    shape.fill()
+                        .foregroundColor(.red)
+                    Image(systemName: "snowflake", variableValue: 3.0).foregroundColor(.white).font(.largeTitle)
+                }
             }
         }
         .onTapGesture {
