@@ -9,7 +9,7 @@ import Foundation
 
 struct MemoryGame <CardContent> {
     
-    var cards : Array <Card>
+    private(set)  var cards: Array <Card>
     
     init(numberOfPairOfCards : Int, createContent: (Int) -> CardContent) {
         // init empty array to hold cards
@@ -28,9 +28,17 @@ struct MemoryGame <CardContent> {
         
     }
     
-    
-    struct Card {
-        var isFaceUp:   Bool = false
+    //
+    // Identifiable необходим для работы ForEach с использованием
+    // Card в качестве перечисляемого / индексируемого элемента массива
+    // Фактически, для этого необходимо поле id любого типа (String, Int)
+    //
+
+    struct Card : Identifiable{
+        
+        let id = UUID().uuidString
+        
+        var isFaceUp:   Bool = true
         var isWatched:  Bool = false
         var content:    CardContent
     }

@@ -30,10 +30,10 @@ class EmojiMemoryGame {
         }
     }
     
-    private var model : MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
+    private(set) var model : MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
     var cards:  Array<MemoryGame<String>.Card>  {
-        return model.cards
+        model.cards
     }
     
     
