@@ -11,7 +11,7 @@ let gridItemSpacing = 7.0
 
 struct ContentView: View {
 
-    let viewModel:  EmojiMemoryGame
+    @ObservedObject var  viewModel:  EmojiMemoryGame
      
     
     private let gridFormat = [
@@ -28,6 +28,9 @@ struct ContentView: View {
                 LazyVGrid(columns: gridFormat, spacing : gridItemSpacing ) {
                     ForEach(viewModel.model.cards)  { card in
                         CardView(card : card ).aspectRatio(1.0, contentMode: .fit)
+                            .onTapGesture {
+                                viewModel.chooseCard(card)
+                            }
                     }
                 }
             }
