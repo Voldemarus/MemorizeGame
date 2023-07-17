@@ -25,20 +25,11 @@ struct MemoryGame <CardContent> {
     
     
     mutating func chooseCard(_ card : Card) {
-        let cardIndex = index(card)
+        let cardIndex = cards.firstIndex(where: {$0.id == card.id})
         if let cardIndex {
            cards[cardIndex].isFaceUp.toggle()
         }
         print("cards - \(cards)")
-    }
-    
-    func index(_ card: Card) -> Int? {
-           for index in 0..<cards.count {
-            if card.id == cards[index].id {
-                return index
-            }
-        }
-        return nil   // Элемент в масиве не найден
     }
     
     //
