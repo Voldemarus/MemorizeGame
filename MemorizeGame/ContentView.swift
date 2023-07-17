@@ -11,7 +11,7 @@ let gridItemSpacing = 7.0
 
 struct ContentView: View {
 
-    @ObservedObject var  viewModel:  EmojiMemoryGame
+    @ObservedObject var viewModel:  EmojiMemoryGame
      
     
     private let gridFormat = [
