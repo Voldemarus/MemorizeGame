@@ -7,9 +7,11 @@
 
 import Foundation
 
-struct MemoryGame <CardContent> {
+struct MemoryGame <CardContent>  where CardContent : Equatable {
     
     private(set)  var cards: Array <Card>
+    
+    private var indexOfOpenedCard : Int?
     
     init(numberOfPairOfCards : Int, createContent: (Int) -> CardContent) {
         // init empty array to hold cards
@@ -25,11 +27,29 @@ struct MemoryGame <CardContent> {
     
     
     mutating func chooseCard(_ card : Card) {
-        let cardIndex = cards.firstIndex(where: {$0.id == card.id})
-        if let cardIndex {
-           cards[cardIndex].isFaceUp.toggle()
+        if let cardIndex = cards.firstIndex(where: {$0.id == card.id}) {
+            if let openedIndex = indexOfOpenedCard,
+               !cards[cardIndex].isFaceUp && !cards[cardIndex].isMatched {
+                // у нас есть индекс ранее открытой карты, если содержимое карт совпадает
+                // помечаем обе карты как совпавшие
+                if cards[cardIndex].content == cards[indexOfOpenedCard!].content
+                    {
+                    cards[cardIndex].isMatched = true
+                    cards[indexOfOpenedCard!].isMatched = true
+                } else {
+                    // Не совпало, разворачиваем обе карты обратно
+                    // TODO! Маленькая задержка для юзера
+                    cards[cardIndex].isFaceUp = false
+                    cards[indexOfOpenedCard!].isFaceUp = false
+                }
+                indexOfOpenedCard = nil
+            } else {
+                // открываем карту, поскольку пары для нее пока нет
+                cards[cardIndex].isFaceUp = true
+                // и запоминаем ее индекс
+                indexOfOpenedCard = cardIndex
+            }
         }
-        print("cards - \(cards)")
     }
     
     //
@@ -42,8 +62,8 @@ struct MemoryGame <CardContent> {
         
         let id = UUID().uuidString
         
-        var isFaceUp:   Bool = true
-        var isWatched:  Bool = false
+        var isFaceUp:   Bool = false
+        var isMatched:  Bool = false
         var content:    CardContent
     }
 }
